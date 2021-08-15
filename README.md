@@ -1,3 +1,5 @@
-# yandex-metrika-goals-example
+# How to use Yandex.Metrika goals for generate analytics
 
-See [howto.md](howto.md)
+Self-notes for reuse later.
+
+See [index.md](index.md) for details.
