@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>Как использовать цели Яндекс.Метрики для получения статистика по разделам сайта</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+	<link as="style" rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<section class="section">
+	<div class="container">
+		<div class="content">
+			<h1>Как использовать цели Яндекс.Метрики для получения статистика по разделам сайта</h1>
+
+<p>Используем существующий счётчик Яндекс.Метрики или заводим новый.
+Все примеры - на базе сайта <a href="https://ltr.online-media.ru/">https://ltr.online-media.ru/</a>.</p>
+
+<h3>Шаг 1. Подготовка</h3>
+
+<p>Завести новый счётчик для сайта, <a href="https://metrika.yandex.ru/dashboard?id=84013735">https://metrika.yandex.ru/dashboard?id=84013735</a>
+Код:</p>
+
+<pre><code class="language-html">&lt;!-- Yandex.Metrika counter --&gt;
+&lt;script type=&quot;text/javascript&quot; &gt;
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, &quot;script&quot;, &quot;https://mc.yandex.ru/metrika/tag.js&quot;, &quot;ym&quot;);
+   ym(84013735, &quot;init&quot;, {
+     clickmap:true,
+     trackLinks:true,
+     accurateTrackBounce:true
+   });
+&lt;/script&gt;
+&lt;noscript&gt;&lt;div&gt;&lt;img src=&quot;https://mc.yandex.ru/watch/84013735&quot; style=&quot;position:absolute; left:-9999px;&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;&lt;/noscript&gt;
+&lt;!-- /Yandex.Metrika counter --&gt;
+</code></pre>
+
+<ul>
+<li>Исправить код, если требуется.</li>
+<li>Выделить ID счётчика. ID счётчика: <code>84013735</code>.</li>
+<li><a href="img/01.counter-in-settings.png">Вставить счётчик</a> в админку, <a href="https://ltr.online-media.ru/cms/">https://ltr.online-media.ru/cms/</a></li>
+<li>Проверить, что код выводится: <code>Ctrl+U</code> в браузере, ищем код счётчика.</li>
+</ul>
+
+<h3>Шаг 2. Создание целей</h3>
+
+<p>Создать цели на каждую группу, <a href="https://metrika.yandex.ru/goals?id=84013735">https://metrika.yandex.ru/goals?id=84013735</a></p>
+
+<p>Пример, <a href="img/02.goal-create-ym.png">скриншот</a>:</p>
+
+<ul>
+<li>Название: Из фонда Музей Томского приборного завода</li>
+<li>Тип: JavaScript-событие</li>
+<li>Идентификатор цели: <code>elib-tomsk-instruments-2021</code>
+<br><strong>важно</strong>: суффикс идентификатора цели формировать из <code>год-месяц</code>, пригодится позже</li>
+<li>Скопировать код</li>
+<li>Добавить цель, сохранить счётчик</li>
+</ul>
+
+<p>Результат: <a href="img/03.goals.png">список целей</a></p>
+
+<p>Скопированный код:</p>
+
+<pre><code class="language-javascript">ym(84013735,'reachGoal','elib-tomsk-instruments-2021')
+</code></pre>
+
+<h3>Шаг 3. Использование целей</h3>
+
+<p>На нужной странице (документе) надо разместить скопированный код.</p>
+
+<p>Сформировать код для вставки в HTML:</p>
+
+<pre><code class="language-html">&lt;script defer&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+    ym(84013735,'reachGoal','elib-tomsk-instruments-2021')
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>Вставить в страницу.</p>
+
+<p>Проверить результат:</p>
+
+<ol>
+<li>Выводится ли код на нужной странице?
+<br><code>Ctrl + U</code>: <a href="img/10.goal-in-source.png">скриншот</a></li>
+<li>Нет ли ошибок в консоли инструментов разработчика?<br><code>F12</code> -&gt; Console: <a href="img/11.page-dev-console.png">скриншот</a></li>
+</ol>
+
+<h3>Шаг 4. Аналитика</h3>
+
+<p>Открыть Яндекс.Метрика, счётчик.
+<a href="https://metrika.yandex.ru/stat/traffic?period=month&amp;accuracy=1&amp;id=84013735&amp;stateHash=6118ea8840ff3a002011a4c8">https://metrika.yandex.ru/stat/traffic?period=month&amp;accuracy=1&amp;id=84013735&amp;stateHash=6118ea8840ff3a002011a4c8</a></p>
+
+<p>Создать новый отчёт по посещаемости:</p>
+
+<ul>
+<li>Отчёты -&gt; Мои отчёты -&gt; <a href="img/20.ym-new-report.png">Новый отчёт</a></li>
+<li>Убрать ненужные группировки, <a href="img/21.ym-grouping-1.png">тут</a> и <a href="img/22.ym-grouping-2.png">тут</a></li>
+<li>Выбрать нужные <a href="img/23.ym-settings.png">период и детализацию, отключить график</a></li>
+<li>Почистить метрики: <a href="img/24.ym-metrics.png">открыть окно</a>, <a href="img/25.ym-metrics.png">удалить ненужные</a>.</li>
+<li><a href="img/26.ym-report-save.png">Сохранить</a> отчёт как &ldquo;Посещение по целям&rdquo;</li>
+<li>Пометить отчёт как <a href="img/27.report-fav.png">избранный</a></li>
+</ul>
+
+<p>В отчёте отображаются базовые метрики по посещаемости <a href="img/28.report-total.png">по всему счётчику</a></p>
+
+<ul>
+<li>Визиты: Суммарное количество визитов 3</li>
+<li>Просмотры: Число просмотров страниц 31</li>
+<li>Посетители: Уникальных посетителей 3</li>
+</ul>
+
+<p><a href="img/29.report-choose-goal.png">Выберите</a> одну цель и вам выведутся дополнительные
+колонки <a href="img/30.report-by-goal.png">по выбранной цели</a>. Нужные колонки:</p>
+
+<ul>
+<li>Достижения цели: <strong>просмотры</strong> страниц в выбранной группе</li>
+<li>Целевые визиты: <strong>визиты</strong> на страницы в выбранной группе</li>
+<li>Целевые посетители: <strong>уникальные посетители</strong> в выбранной группе</li>
+</ul>
+
+		</div>
+	</div>
+</section>
+
+
+<script defer src="/js/simple-lightbox.js"></script>
+<script defer>
+"use strict";
+/* global SimpleLightbox */
+
+	const prepareLinks = function () {
+		const links = document.links;
+		const prefix = window.location.protocol + '//' + window.location.hostname;
+		for (let i = 0, linksLength = links.length; i < linksLength; i++) {
+
+			// Non-local
+			if (links[i].hostname !== window.location.hostname) {
+				links[i].target = '_blank';
+				continue;
+			}
+
+			// Local
+			const req = links[i].href.replace(prefix, '');
+			const ext = req.replace(/^.*\.(\w+)$/g, (match, ext) => ext).toLowerCase();
+
+			// Filter by extension
+			switch (ext) {
+				default:
+					continue;
+				case 'jpg': case 'jpeg': case 'png':
+					break;
+			}
+
+			links[i].className = 'js-lightbox';
+			links[i].target = '_blank';
+		} // for
+	} // func prepareLinks
+
+	const bindLightBox = function () {
+
+		const lightboxOpts = {
+			widthRatio: 0.85,
+			heightRatio: 0.95,
+			disableScroll: false,
+			docClose: true,
+			nav: false,
+			close: true,
+			closeText: '×',
+			overlay: true,
+			animationSlide: false,
+			animationSpeed: 150,
+			fadeSpeed: 150,
+			// rel: true,
+			captionSelector: 'self',
+		};
+		new SimpleLightbox('.js-lightbox', lightboxOpts);
+	};
+
+	document.addEventListener("DOMContentLoaded", function () {
+		prepareLinks();
+		bindLightBox();
+	});
+</script>
+</body>
+</html>

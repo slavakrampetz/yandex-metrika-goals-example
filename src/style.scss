@@ -1,3 +1,12 @@
+$font: Calibri, Arial, sans-serif;
+
+// Simple Lightbox
+$sl-font-family: $font;
+$sl-overlay-background: #000;
+$sl-navigation-color: #eee;
+
+@import "_ext/simple-lightbox";
+
 * {
-	font-family: Calibri, Arial, sans-serif;
+	font-family: $font;
 }

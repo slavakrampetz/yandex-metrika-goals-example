@@ -3,6 +3,5 @@
 
 ## Host
 /Taskvars.yml
+/.task/
 
-## Generated
-/dist/

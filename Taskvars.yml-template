@@ -2,3 +2,4 @@
 
 OUTDIR: dist/
 BASEURL: http://yandex-metrika-goals-example.netlify.app/
+LOCALHOST: http://ltr-yame.USER/

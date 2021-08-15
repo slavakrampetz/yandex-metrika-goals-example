@@ -1,11 +1,82 @@
 <!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
 <html lang="ru">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<title>{{ .Title }}</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 	<link as="style" rel="stylesheet" href="/style.css">
 </head>
 <body>
-{{ .Content }}
+
+<section class="section">
+	<div class="container">
+		<div class="content">
+			{{ .Content }}
+		</div>
+	</div>
+</section>
+
+
+<script defer src="/js/simple-lightbox.js"></script>
+<script defer>
+"use strict";
+/* global SimpleLightbox */
+
+	const prepareLinks = function () {
+		const links = document.links;
+		const prefix = window.location.protocol + '//' + window.location.hostname;
+		for (let i = 0, linksLength = links.length; i < linksLength; i++) {
+
+			// Non-local
+			if (links[i].hostname !== window.location.hostname) {
+				links[i].target = '_blank';
+				continue;
+			}
+
+			// Local
+			const req = links[i].href.replace(prefix, '');
+			const ext = req.replace(/^.*\.(\w+)$/g, (match, ext) => ext).toLowerCase();
+
+			// Filter by extension
+			switch (ext) {
+				default:
+					continue;
+				case 'jpg': case 'jpeg': case 'png':
+					break;
+			}
+
+			links[i].className = 'js-lightbox';
+			links[i].target = '_blank';
+		} // for
+	} // func prepareLinks
+
+	const bindLightBox = function () {
+
+		const lightboxOpts = {
+			widthRatio: 0.85,
+			heightRatio: 0.95,
+			disableScroll: false,
+			docClose: true,
+			nav: false,
+			close: true,
+			closeText: '×',
+			overlay: true,
+			animationSlide: false,
+			animationSpeed: 150,
+			fadeSpeed: 150,
+			// rel: true,
+			captionSelector: 'self',
+		};
+		new SimpleLightbox('.js-lightbox', lightboxOpts);
+	};
+
+	document.addEventListener("DOMContentLoaded", function () {
+		prepareLinks();
+		bindLightBox();
+	});
+</script>
 </body>
 </html>

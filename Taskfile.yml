@@ -7,12 +7,6 @@ silent: true
 
 tasks:
 
-  build:
-    desc: Build by hustie
-    cmds:
-      - echo "Building to dir {{.OUTDIR}} with url {{.BASEURL}} …"
-      - cmd: "hastie"
-
   clean:
     desc: Cleanup hustie generated files
     cmds:
@@ -20,11 +14,46 @@ tasks:
       - cmd: rm -rf ./dist/
       - cmd: mkdir -p ./dist/
 
+  build:
+    desc: Build all
+    deps:
+      - md
+      - statics
+
+  statics:
+    desc: Copy images and statics
+    sources:
+      - ./src/img/*.png
+      - ./src/js/*.js
+    generates:
+      - ./dist/img/*.png
+      - ./dist/js/*.js
+    cmds:
+      - mkdir -p ./dist/img/
+      - mkdir -p ./dist/js/
+      - cp ./src/img/*.png ./dist/img/
+      - cp ./src/js/*.js ./dist/js/
+    method: timestamp
+
+  md:
+    desc: Build by hustie
+    cmds:
+      - echo "Building to dir {{.OUTDIR}} with url {{.BASEURL}} …"
+      - cmd: "hastie"
+    sources:
+      - ./layout/page.html
+      - ./src/*.md
+      - ./src/style.scss
+    generates:
+      - ./dist/*.html
+      - ./dist/style.css
+    method: checksum
+
   linkchecker:
     cmds:
       - sleep 2
       - echo "Run link checker after pause ..."
-      - cmd: "linkcheck --root http://localhost:{{.PORT}}"
+      - cmd: "linkcheck {{.LOCALHOST}}"
       - echo "-------------------------------------------------------------"
       - echo "Done, plase kill server - Ctrl+C, then Enter"
 
