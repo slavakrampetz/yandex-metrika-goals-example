@@ -1,0 +1,8 @@
+{
+	"SourceDir": "src",
+	"LayoutDir": "layout",
+	"PublishDir": "dist",
+	"processFilters": {
+		"scss": ["c:\\bin\\scoop\\shims\\sass.cmd", "css"]
+	}
+}
