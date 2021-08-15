@@ -1,0 +1,66 @@
+# https://taskfile.dev
+
+version: '2'
+
+## Common settings
+silent: true
+expansions: 2
+
+vars:
+  PORT: 3535
+
+tasks:
+
+  build:
+    desc: Build
+    cmds:
+      - echo "Building to dir {{.OUTDIR}} with url {{.BASEURL}} …"
+      - cmd: "hugo --gc --ignoreCache -d {{.OUTDIR}} -b {{.BASEURL}}"
+
+  run:
+    desc: Run local development server
+    cmds:
+      - echo "Running developer server at http://localhost:{{.PORT}}"
+      - cmd: "hugo server --bind 0.0.0.0 --noHTTPCache -p {{.PORT}}"
+        ignore_error: true
+
+  ## https://gohugo.io/hosting-and-deployment/deployment-with-rsync/
+  deploy:
+    desc: Build and deploy to {{.OUTDIR}}, then to server
+    deps: [build]
+    cmds:
+      - echo "Ready to deploy. Copying data to the server by rsync"
+      - echo "cd {{.OUTDIR}} && rsync -rvc -e 'ssh -p {{.OUT_SSH_PORT}}' --delete ./ {{.OUT_SSH_PATH}}"
+      - cmd: "cd {{.OUTDIR}} && rsync -rvc -e 'ssh -p {{.OUT_SSH_PORT}}' --delete ./ {{.OUT_SSH_PATH}}"
+      - echo "Delete output folder ..."
+      - cmd: "rm -rf {{.OUTDIR}}"
+
+  clean:
+    desc: Cleanup hugo generated files
+    cmds:
+      - echo "Cleaning caches.."
+      - cmd: hugo --renderToMemory --gc
+      - cmd: rm -rf ./public/
+
+  server:
+    cmds:
+      - echo Run dev server
+      - cmd: "hugo server --noHTTPCache -p {{.PORT}}"
+        ignore_error: true
+        silent: true
+      - echo Done with dev server
+
+  linkchecker:
+    cmds:
+      - sleep 2
+      - echo "Run link checker after pause ..."
+      - cmd: "linkcheck --root http://localhost:{{.PORT}}"
+      - echo "-------------------------------------------------------------"
+      - echo "Done, plase kill server - Ctrl+C, then Enter"
+
+  links:
+    deps:
+      - server
+      - linkchecker
+    cmds:
+      - echo Run all together
