@@ -1,0 +1,8 @@
+.DS_Store
+/.idea/
+
+## Host
+/Taskvars.yml
+
+## Generated
+/dist/
